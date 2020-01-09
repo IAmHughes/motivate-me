@@ -18,7 +18,7 @@ outputs:
   id:
     description: 'The GIF's unique ID on GIPHY'
   title:
-    description: 'The title that appears on GIPHY for the GIF"
+    description: 'The title that appears on GIPHY for the GIF'
   gif_url:
     description: 'The publicly-accessible direct URL for the GIF on GIPHY'
 runs:
