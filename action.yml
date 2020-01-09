@@ -1,0 +1,25 @@
+name: 'Motivate me'
+description: 'Adds an inspirational gif powered by GIPHY to stale PRs'
+author: 'IAmHughes'
+inputs:
+  query:
+    description: 'The search query term or phrase to use when returning a gif. Default: `motivation`'
+    required: false
+    default: 'motivation'
+  rating:
+    description: 'The content rating used to filter results from the gif search. Default: `g`'
+    required: false
+    default: 'g' # Other options documented in the GIPHY API docs: https://developers.giphy.com/docs/optional-settings#rating
+  lang:
+    description: 'The default language that the search query is in. Default: `en` for English'
+    required: false
+    default: 'en' # Other options documented in the GIPHY API docs: https://developers.giphy.com/docs/optional-settings#language-support
+outputs:
+  id:
+    description: 'The ID of the gif'
+runs:
+  using: 'node12'
+  main: 'dist/index.js'
+branding:
+  icon: 'award'
+  color: 'green'
