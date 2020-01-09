@@ -1,0 +1,22 @@
+on:
+  schedule:
+  - cron: 30 * * * *  # Every 30 minutes for testing – https://crontab.guru
+
+name: Motivate Me
+
+jobs:
+  motivation:
+    name: Motivate Me
+    runs-on: ubuntu-latest
+    steps:
+      - name: Motivate Me
+        id: motivate_me
+        uses: iamhughes/motivate-me@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+          GIPHY_TOKEN: ${{ secrets.GIPHY_TOKEN }} # This token should be created on giphy.com: https://developers.giphy.com/dashboard/?create=true
+        with:
+          query: 'motivation'
+          rating: 'g'
+          lang: 'en'
+          stale_days: 14
