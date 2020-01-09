@@ -1,13 +1,13 @@
 name: 'Motivate me'
-description: 'Adds an inspirational gif powered by GIPHY to stale PRs'
+description: 'Adds an inspirational GIF powered by GIPHY to stale PRs'
 author: 'IAmHughes'
 inputs:
   query:
-    description: 'The search query term or phrase to use when returning a gif. Default: `motivation`'
+    description: 'The search query term or phrase to use when returning a GIF. Default: `motivation`'
     required: false
     default: 'motivation'
   rating:
-    description: 'The content rating used to filter results from the gif search. Default: `g`'
+    description: 'The content rating used to filter results from the GIF search. Default: `g`'
     required: false
     default: 'g' # Other options documented in the GIPHY API docs: https://developers.giphy.com/docs/optional-settings#rating
   lang:
@@ -16,7 +16,11 @@ inputs:
     default: 'en' # Other options documented in the GIPHY API docs: https://developers.giphy.com/docs/optional-settings#language-support
 outputs:
   id:
-    description: 'The ID of the gif'
+    description: 'The GIF's unique ID on GIPHY'
+  title:
+    description: 'The title that appears on GIPHY for the GIF"
+  gif_url:
+    description: 'The publicly-accessible direct URL for the GIF on GIPHY'
 runs:
   using: 'node12'
   main: 'dist/index.js'
