@@ -4,19 +4,19 @@ author: 'IAmHughes'
 inputs:
   query:
     description: 'The search query term or phrase to use when returning a GIF. Default: `motivation`'
-    required: true
+    required: false
     default: 'motivation'
   rating:
     description: 'The content rating used to filter results from the GIF search. Default: `g`'
-    required: true
+    required: false
     default: 'g' # Other options documented in the GIPHY API docs: https://developers.giphy.com/docs/optional-settings#rating
   lang:
     description: 'The default language that the search query is in. Default: `en` for English'
-    required: true
+    required: false
     default: 'en' # Other options documented in the GIPHY API docs: https://developers.giphy.com/docs/optional-settings#language-support
   stale_days:
     description: 'Number of days of inactivity before a pull request receives motivation. Default: `14`'
-    required: true
+    required: false
     default: 14
 outputs:
   id:
