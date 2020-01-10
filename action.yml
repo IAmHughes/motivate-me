@@ -17,7 +17,7 @@ inputs:
   stale_days:
     description: 'Number of days of inactivity before a pull request receives motivation. Default: `14`'
     required: false
-    default: 14
+    default: '14'
 outputs:
   id:
     description: 'The GIF's unique ID on GIPHY'
