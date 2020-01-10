@@ -26,7 +26,7 @@ async function run() {
       sort: 'updated'
     });
 
-    console.log(`prResponse: ${listPullRequestsResponse}`);
+    core.debug(`prResponse: ${listPullRequestsResponse}`);
 
     // Iterate through pull requests returned above and check date of last activity (`updated_at` field)
     // For each PR that matches stale filter:
@@ -36,7 +36,7 @@ async function run() {
     // eslint-disable-next-line no-plusplus
     for (index = 0; index < listPullRequestsResponse.data.length; index++) {
       if (listPullRequestsResponse.data[index].updated_at > staleDays) {
-        console.log('listPRResponseData', listPullRequestsResponse.data);
+        core.debug('listPRResponseData', listPullRequestsResponse.data);
       }
     }
 
@@ -46,7 +46,7 @@ async function run() {
       `https://api.giphy.com/v1/gifs/search?api_key=${process.env.GIPHY_TOKEN}&q=${query}&limit=25&offset=0&rating=${rating}&lang=${lang}`
     );
     searchForGifResponse.done(data => {
-      console.log('success got data', data);
+      core.debug('success got data', data);
     });
 
     // Create a comment
@@ -60,8 +60,8 @@ async function run() {
         'Get motivated! ![test](https://media3.giphy.com/media/87xihBthJ1DkA/giphy.gif?cid=790b76112656e5dfae313de575de097305815350cad3216d&rid=giphy.gif)'
     });
 
-    console.log(`createCommentResponse: ${createCommentResponse}`);
-    console.log(`createCommentResponseData: ${createCommentResponse.data}`);
+    core.debug(`createCommentResponse: ${createCommentResponse}`);
+    core.debug(`createCommentResponseData: ${createCommentResponse.data}`);
 
     // Get the ID, title, and GIF URL for the GIF from the response
     const {
