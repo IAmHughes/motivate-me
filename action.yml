@@ -20,7 +20,7 @@ inputs:
     default: '14'
 outputs:
   id:
-    description: 'The GIF's unique ID on GIPHY'
+    description: 'The GIFs unique ID on GIPHY'
   title:
     description: 'The title that appears on GIPHY for the GIF'
   gif_url:
