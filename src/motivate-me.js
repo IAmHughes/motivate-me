@@ -45,9 +45,8 @@ async function run() {
     const searchForGifResponse = await axios.get(
       `https://api.giphy.com/v1/gifs/search?api_key=${process.env.GIPHY_TOKEN}&q=${query}&limit=25&offset=0&rating=${rating}&lang=${lang}`
     );
-    searchForGifResponse.done(data => {
-      core.debug('success got data', data);
-    });
+
+    core.debug('searcForGifResponse', searchForGifResponse.data);
 
     // Create a comment
     // API Documentation: https://developer.github.com/v3/issues/comments/#create-a-comment
