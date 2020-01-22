@@ -36,7 +36,7 @@ async function run() {
     // eslint-disable-next-line no-plusplus
     for (index = 0; index < listPullRequestsResponse.data.length; index++) {
       if (listPullRequestsResponse.data[index].updated_at > staleDays) {
-        core.debug('listPRResponseData', listPullRequestsResponse.data);
+        core.debug('listPRResponseData', listPullRequestsResponse.data.toString());
       }
     }
 
@@ -46,12 +46,12 @@ async function run() {
       `https://api.giphy.com/v1/gifs/search?api_key=${process.env.GIPHY_TOKEN}&q=${query}&limit=25&offset=0&rating=${rating}&lang=${lang}`
     );
 
-    core.debug('searcForGifResponse', searchForGifResponse.data);
+    core.debug('searcForGifResponse', searchForGifResponse.data.toString());
 
     // Create a comment
     // API Documentation: https://developer.github.com/v3/issues/comments/#create-a-comment
     // Octokit Documentation: https://octokit.github.io/rest.js/#octokit-routes-issues-create-comment
-    const createCommentResponse = await issues.repos.createComment({
+    const createCommentResponse = await github.issues.repos.createComment({
       owner,
       repo,
       issue_number: 1,
@@ -60,7 +60,7 @@ async function run() {
     });
 
     core.debug(`createCommentResponse: ${createCommentResponse}`);
-    core.debug(`createCommentResponseData: ${createCommentResponse.data}`);
+    core.debug(`createCommentResponseData: ${createCommentResponse.data.toString()}`);
 
     // Get the ID, title, and GIF URL for the GIF from the response
     const {
