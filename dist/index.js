@@ -5120,7 +5120,7 @@ async function run() {
     // eslint-disable-next-line no-plusplus
     for (index = 0; index < listPullRequestsResponse.data.length; index++) {
       if (listPullRequestsResponse.data[index].updated_at > staleDays) {
-        core.debug('listPRResponseData', listPullRequestsResponse.data.toString());
+        core.debug('listPRResponseData', JSON.stringify(listPullRequestsResponse.data));
       }
     }
 
@@ -5130,7 +5130,7 @@ async function run() {
       `https://api.giphy.com/v1/gifs/search?api_key=${process.env.GIPHY_TOKEN}&q=${query}&limit=25&offset=0&rating=${rating}&lang=${lang}`
     );
 
-    core.debug('searcForGifResponse', searchForGifResponse.data.toString());
+    core.debug('searcForGifResponse', JSON.stringify(searchForGifResponse.data));
 
     // Create a comment
     // API Documentation: https://developer.github.com/v3/issues/comments/#create-a-comment
@@ -5143,10 +5143,11 @@ async function run() {
         'Get motivated! ![test](https://media3.giphy.com/media/87xihBthJ1DkA/giphy.gif?cid=790b76112656e5dfae313de575de097305815350cad3216d&rid=giphy.gif)'
     });
 
-    core.debug(`createCommentResponse: ${createCommentResponse}`);
-    core.debug(`createCommentResponseData: ${createCommentResponse.data.toString()}`);
+    core.debug('createCommentResponse', JSON.stringify(createCommentResponse));
+    core.debug('createCommentResponseData', JSON.stringify(createCommentResponse.data));
 
     // Get the ID, title, and GIF URL for the GIF from the response
+    // TODO: Move up before creating comment
     const {
       data: {
         id: gifId,
