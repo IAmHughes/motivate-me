@@ -51,7 +51,7 @@ async function run() {
     // Create a comment
     // API Documentation: https://developer.github.com/v3/issues/comments/#create-a-comment
     // Octokit Documentation: https://octokit.github.io/rest.js/#octokit-routes-issues-create-comment
-    const createCommentResponse = await github.issues.repos.createComment({
+    const createCommentResponse = await github.issues.createComment({
       owner,
       repo,
       issue_number: 1,
