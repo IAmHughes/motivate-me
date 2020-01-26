@@ -74,6 +74,16 @@ async function run() {
       }
     } = searchForGifResponse;
 
+    core.debug(`\n\n\n\n\n\n\n\n\n\n\n`);
+    core.debug(`\n\n\n\n\n\n\n\n\n\n\n`);
+    core.debug(`gifId: ${JSON.stringify(gifId)}`);
+    core.debug(`\n\n\n\n\n\n\n\n\n\n\n`);
+    core.debug(`gifTitle: ${JSON.stringify(gifTitle)}`);
+    core.debug(`\n\n\n\n\n\n\n\n\n\n\n`);
+    core.debug(`gifUrl: ${JSON.stringify(gifUrl)}`);
+    core.debug(`\n\n\n\n\n\n\n\n\n\n\n`);
+    core.debug(`\n\n\n\n\n\n\n\n\n\n\n`);
+
     // Set the output variables for use by other actions: https://github.com/actions/toolkit/tree/master/packages/core#inputsoutputs
     core.setOutput('id', gifId);
     core.setOutput('title', gifTitle);
