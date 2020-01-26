@@ -5117,10 +5117,22 @@ async function run() {
     // Use index of PR in array for offset in below query for GIF on GIPHY
     // Create a comment
     let index;
+    let issueNumber;
     // eslint-disable-next-line no-plusplus
     for (index = 0; index < listPullRequestsResponse.data.length; index++) {
       if (listPullRequestsResponse.data[index].updated_at > staleDays) {
+        core.debug(`\n\n\n\n\n\n\n\n\n\n\n`);
+        core.debug(`\n\n\n\n\n\n\n\n\n\n\n`);
+        core.debug(`updated_at: ${JSON.stringify(listPullRequestsResponse.data[index].updated_at)}`);
+        core.debug(`staleDays: ${staleDays}`);
+        core.debug(`\n\n\n\n\n\n\n\n\n\n\n`);
         core.debug(`listPRResponseData ${JSON.stringify(listPullRequestsResponse.data)}`);
+        core.debug(`\n\n\n\n\n\n\n\n\n\n\n`);
+        core.debug(`\n\n\n\n\n\n\n\n\n\n\n`);
+        issueNumber = listPullRequestsResponse.data[index].number;
+        core.debug(`issueNumber: ${issueNumber}`);
+        core.debug(`\n\n\n\n\n\n\n\n\n\n\n`);
+        core.debug(`\n\n\n\n\n\n\n\n\n\n\n`);
       }
     }
 
@@ -5130,7 +5142,11 @@ async function run() {
       `https://api.giphy.com/v1/gifs/search?api_key=${process.env.GIPHY_TOKEN}&q=${query}&limit=25&offset=0&rating=${rating}&lang=${lang}`
     );
 
+    core.debug(`\n\n\n\n\n\n\n\n\n\n\n`);
+    core.debug(`\n\n\n\n\n\n\n\n\n\n\n`);
     core.debug(`searchForGifResponse ${JSON.stringify(searchForGifResponse.data)}`);
+    core.debug(`\n\n\n\n\n\n\n\n\n\n\n`);
+    core.debug(`\n\n\n\n\n\n\n\n\n\n\n`);
 
     // Create a comment
     // API Documentation: https://developer.github.com/v3/issues/comments/#create-a-comment
@@ -5138,25 +5154,26 @@ async function run() {
     const createCommentResponse = await github.issues.createComment({
       owner,
       repo,
-      issue_number: 2,
+      issue_number: issueNumber,
       body:
-        'Get motivated! ![test](https://media3.giphy.com/media/87xihBthJ1DkA/giphy.gif?cid=790b76112656e5dfae313de575de097305815350cad3216d&rid=giphy.gif)'
+        'Get motivated!\n\n![test](https://media3.giphy.com/media/87xihBthJ1DkA/giphy.gif?cid=790b76112656e5dfae313de575de097305815350cad3216d&rid=giphy.gif)'
     });
 
+    core.debug(`\n\n\n\n\n\n\n\n\n\n\n`);
+    core.debug(`\n\n\n\n\n\n\n\n\n\n\n`);
     core.debug(`createCommentResponse ${JSON.stringify(createCommentResponse)}`);
-    core.debug(`createCommentResponseData ${JSON.stringify(createCommentResponse.data)}`);
+    core.debug(`\n\n\n\n\n\n\n\n\n\n\n`);
+    core.debug(`\n\n\n\n\n\n\n\n\n\n\n`);
 
     // Get the ID, title, and GIF URL for the GIF from the response
     // TODO: Move up before creating comment
     const {
-      data: {
-        id: gifId,
-        title: gifTitle,
-        images: {
-          original: { url: gifUrl }
-        }
+      id: gifId,
+      title: gifTitle,
+      images: {
+        original: { url: gifUrl }
       }
-    } = searchForGifResponse;
+    } = searchForGifResponse.data[0];
 
     core.debug(`\n\n\n\n\n\n\n\n\n\n\n`);
     core.debug(`\n\n\n\n\n\n\n\n\n\n\n`);
