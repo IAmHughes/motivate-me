@@ -5138,7 +5138,7 @@ async function run() {
     const createCommentResponse = await github.issues.createComment({
       owner,
       repo,
-      issue_number: 1,
+      issue_number: 2,
       body:
         'Get motivated! ![test](https://media3.giphy.com/media/87xihBthJ1DkA/giphy.gif?cid=790b76112656e5dfae313de575de097305815350cad3216d&rid=giphy.gif)'
     });
