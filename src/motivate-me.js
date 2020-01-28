@@ -26,7 +26,7 @@ async function run() {
       sort: 'updated'
     });
 
-    core.debug(`Successfully received list of active PRs for ${owner / repo}`);
+    core.debug(`Successfully received list of active PRs for ${owner} / ${repo}`);
 
     // Iterate through pull requests returned above and check date of last activity (`updated_at` field)
     // For each PR that matches stale filter:
