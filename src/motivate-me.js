@@ -26,7 +26,7 @@ async function run() {
       sort: 'updated'
     });
 
-    core.debug(`prResponse ${JSON.stringify(listPullRequestsResponse)}`);
+    core.debug(`Successfully received list of active PRs for ${owner / repo}`);
 
     // Iterate through pull requests returned above and check date of last activity (`updated_at` field)
     // For each PR that matches stale filter:
@@ -36,75 +36,58 @@ async function run() {
     let issueNumber;
     // eslint-disable-next-line no-plusplus
     for (index = 0; index < listPullRequestsResponse.data.length; index++) {
-      if (listPullRequestsResponse.data[index].updated_at > staleDays) {
-        core.debug(`\n\n\n\n\n\n\n\n\n\n\n`);
+      if (listPullRequestsResponse.data[index].updated_at > new Date() - staleDays) {
         core.debug(`\n\n\n\n\n\n\n\n\n\n\n`);
         core.debug(`updated_at: ${JSON.stringify(listPullRequestsResponse.data[index].updated_at)}`);
         core.debug(`staleDays: ${staleDays}`);
+        core.debug(`dateMath: ${listPullRequestsResponse.data[index].updated_at > new Date() - staleDays}`);
         core.debug(`\n\n\n\n\n\n\n\n\n\n\n`);
         core.debug(`listPRResponseData ${JSON.stringify(listPullRequestsResponse.data)}`);
         core.debug(`\n\n\n\n\n\n\n\n\n\n\n`);
-        core.debug(`\n\n\n\n\n\n\n\n\n\n\n`);
         issueNumber = listPullRequestsResponse.data[index].number;
         core.debug(`issueNumber: ${issueNumber}`);
-        core.debug(`\n\n\n\n\n\n\n\n\n\n\n`);
-        core.debug(`\n\n\n\n\n\n\n\n\n\n\n`);
       }
+
+      // Query GIPHY for a GIF!
+      // API Documentation: https://developers.giphy.com/docs/api/endpoint/#search
+      const searchForGifResponse = await axios.get(
+        `https://api.giphy.com/v1/gifs/search?api_key=${process.env.GIPHY_TOKEN}&q=${query}&limit=25&offset=0&rating=${rating}&lang=${lang}`
+      );
+
+      core.debug(`Successfully queried GIPHY with query: ${query}, rating: ${rating}, and lang: ${lang}`);
+
+      core.debug(`\n\n\n\n\n\n\n\n\n\n\n`);
+      core.debug(`searchForGifResponse ${JSON.stringify(searchForGifResponse.data)}`);
+      core.debug(`\n\n\n\n\n\n\n\n\n\n\n`);
+
+      // Get the ID, title, and GIF URL for the GIF from the response
+      const {
+        id: gifId,
+        title: gifTitle,
+        images: {
+          original: { url: gifUrl }
+        }
+      } = searchForGifResponse.data[0];
+
+      core.debug(`\n\n\n\n\n\n\n\n\n\n\n`);
+      core.debug(`gifId: ${JSON.stringify(gifId)}`);
+      core.debug(`\n\n\n\n\n\n\n\n\n\n\n`);
+      core.debug(`gifTitle: ${JSON.stringify(gifTitle)}`);
+      core.debug(`\n\n\n\n\n\n\n\n\n\n\n`);
+      core.debug(`gifUrl: ${JSON.stringify(gifUrl)}`);
+      core.debug(`\n\n\n\n\n\n\n\n\n\n\n`);
+
+      // Create a comment
+      // API Documentation: https://developer.github.com/v3/issues/comments/#create-a-comment
+      // Octokit Documentation: https://octokit.github.io/rest.js/#octokit-routes-issues-create-comment
+      await github.issues.createComment({
+        owner,
+        repo,
+        issue_number: issueNumber,
+        body: `Get motivated!\n\n![${gifTitle}](${gifUrl})`
+      });
+      core.debug(`Successfully created comment on PR#: ${issueNumber} and gifTitle: ${gifTitle} - ${gifUrl}`);
     }
-
-    // Query GIPHY for a GIF!
-    // API Documentation: https://developers.giphy.com/docs/api/endpoint/#search
-    const searchForGifResponse = await axios.get(
-      `https://api.giphy.com/v1/gifs/search?api_key=${process.env.GIPHY_TOKEN}&q=${query}&limit=25&offset=0&rating=${rating}&lang=${lang}`
-    );
-
-    core.debug(`\n\n\n\n\n\n\n\n\n\n\n`);
-    core.debug(`\n\n\n\n\n\n\n\n\n\n\n`);
-    core.debug(`searchForGifResponse ${JSON.stringify(searchForGifResponse.data)}`);
-    core.debug(`\n\n\n\n\n\n\n\n\n\n\n`);
-    core.debug(`\n\n\n\n\n\n\n\n\n\n\n`);
-
-    // Create a comment
-    // API Documentation: https://developer.github.com/v3/issues/comments/#create-a-comment
-    // Octokit Documentation: https://octokit.github.io/rest.js/#octokit-routes-issues-create-comment
-    const createCommentResponse = await github.issues.createComment({
-      owner,
-      repo,
-      issue_number: issueNumber,
-      body:
-        'Get motivated!\n\n![test](https://media3.giphy.com/media/87xihBthJ1DkA/giphy.gif?cid=790b76112656e5dfae313de575de097305815350cad3216d&rid=giphy.gif)'
-    });
-
-    core.debug(`\n\n\n\n\n\n\n\n\n\n\n`);
-    core.debug(`\n\n\n\n\n\n\n\n\n\n\n`);
-    core.debug(`createCommentResponse ${JSON.stringify(createCommentResponse)}`);
-    core.debug(`\n\n\n\n\n\n\n\n\n\n\n`);
-    core.debug(`\n\n\n\n\n\n\n\n\n\n\n`);
-
-    // Get the ID, title, and GIF URL for the GIF from the response
-    // TODO: Move up before creating comment
-    const {
-      id: gifId,
-      title: gifTitle,
-      images: {
-        original: { url: gifUrl }
-      }
-    } = searchForGifResponse.data[0];
-
-    core.debug(`\n\n\n\n\n\n\n\n\n\n\n`);
-    core.debug(`\n\n\n\n\n\n\n\n\n\n\n`);
-    core.debug(`gifId: ${JSON.stringify(gifId)}`);
-    core.debug(`\n\n\n\n\n\n\n\n\n\n\n`);
-    core.debug(`gifTitle: ${JSON.stringify(gifTitle)}`);
-    core.debug(`\n\n\n\n\n\n\n\n\n\n\n`);
-    core.debug(`gifUrl: ${JSON.stringify(gifUrl)}`);
-    core.debug(`\n\n\n\n\n\n\n\n\n\n\n`);
-    core.debug(`\n\n\n\n\n\n\n\n\n\n\n`);
-
-    // Set the output variables for use by other actions: https://github.com/actions/toolkit/tree/master/packages/core#inputsoutputs
-    core.setOutput('id', gifId);
-    core.setOutput('title', gifTitle);
-    core.setOutput('gif_url', gifUrl);
   } catch (error) {
     core.setFailed(error.message);
   }

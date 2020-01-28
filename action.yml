@@ -18,13 +18,6 @@ inputs:
     description: 'Number of days of inactivity before a pull request receives motivation. Default: `14`'
     required: false
     default: '14'
-outputs:
-  id:
-    description: 'The GIFs unique ID on GIPHY'
-  title:
-    description: 'The title that appears on GIPHY for the GIF'
-  gif_url:
-    description: 'The publicly-accessible direct URL for the GIF on GIPHY'
 runs:
   using: 'node12'
   main: 'dist/index.js'
