@@ -5117,7 +5117,7 @@ async function run() {
     // Use index of PR in array for offset in below query for GIF on GIPHY
     // Create a comment
     let index;
-    let issueNumber;
+    let prNumber;
     // eslint-disable-next-line no-plusplus
     for (index = 0; index < listPullRequestsResponse.data.length; index++) {
       if (listPullRequestsResponse.data[index].updated_at > new Date() - staleDays) {
@@ -5126,10 +5126,8 @@ async function run() {
         core.debug(`staleDays: ${staleDays}`);
         core.debug(`dateMath: ${listPullRequestsResponse.data[index].updated_at > new Date() - staleDays}`);
         core.debug(`\n\n\n\n\n\n\n\n\n\n\n`);
-        core.debug(`listPRResponseData ${JSON.stringify(listPullRequestsResponse.data)}`);
-        core.debug(`\n\n\n\n\n\n\n\n\n\n\n`);
-        issueNumber = listPullRequestsResponse.data[index].number;
-        core.debug(`issueNumber: ${issueNumber}`);
+        prNumber = listPullRequestsResponse.data[index].number;
+        core.debug(`prNumber: ${prNumber}`);
       }
 
       // Query GIPHY for a GIF!
@@ -5142,19 +5140,15 @@ async function run() {
 
       core.debug(`\n\n\n\n\n\n\n\n\n\n\n`);
       core.debug(`searchForGifResponse ${JSON.stringify(searchForGifResponse.data)}`);
-      core.debug(`\n\n\n\n\n\n\n\n\n\n\n`);
 
       // Get the ID, title, and GIF URL for the GIF from the response
       const {
-        id: gifId,
         title: gifTitle,
         images: {
           original: { url: gifUrl }
         }
-      } = searchForGifResponse.data[0];
+      } = searchForGifResponse.data.data[0];
 
-      core.debug(`\n\n\n\n\n\n\n\n\n\n\n`);
-      core.debug(`gifId: ${JSON.stringify(gifId)}`);
       core.debug(`\n\n\n\n\n\n\n\n\n\n\n`);
       core.debug(`gifTitle: ${JSON.stringify(gifTitle)}`);
       core.debug(`\n\n\n\n\n\n\n\n\n\n\n`);
@@ -5167,10 +5161,10 @@ async function run() {
       await github.issues.createComment({
         owner,
         repo,
-        issue_number: issueNumber,
+        issue_number: prNumber,
         body: `Get motivated!\n\n![${gifTitle}](${gifUrl})`
       });
-      core.debug(`Successfully created comment on PR#: ${issueNumber} and gifTitle: ${gifTitle} - ${gifUrl}`);
+      core.debug(`Successfully created comment on PR#: ${prNumber} and gifTitle: ${gifTitle} - ${gifUrl}`);
     }
   } catch (error) {
     core.setFailed(error.message);
