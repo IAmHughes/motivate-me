@@ -5110,23 +5110,24 @@ async function run() {
       sort: 'updated'
     });
 
-    core.debug(`Successfully received list of active PRs for ${owner} / ${repo}`);
+    core.debug(`Successfully received list of active PRs for ${owner}/${repo}`);
 
     // Iterate through pull requests returned above and check date of last activity (`updated_at` field)
     // For each PR that matches stale filter:
     // Use index of PR in array for offset in below query for GIF on GIPHY
     // Create a comment
-    let index;
+    let i;
     let prNumber;
     // eslint-disable-next-line no-plusplus
-    for (index = 0; index < listPullRequestsResponse.data.length; index++) {
-      if (listPullRequestsResponse.data[index].updated_at > new Date() - staleDays) {
-        core.debug(`\n\n\n\n\n\n\n\n\n\n\n`);
-        core.debug(`updated_at: ${JSON.stringify(listPullRequestsResponse.data[index].updated_at)}`);
-        core.debug(`staleDays: ${staleDays}`);
-        core.debug(`dateMath: ${listPullRequestsResponse.data[index].updated_at > new Date() - staleDays}`);
-        core.debug(`\n\n\n\n\n\n\n\n\n\n\n`);
-        prNumber = listPullRequestsResponse.data[index].number;
+    for (i = 0; i < listPullRequestsResponse.data.length; i++) {
+      core.debug(`updated_at: ${JSON.stringify(listPullRequestsResponse.data[i].updated_at)}`);
+      core.debug(`staleDays: ${staleDays}`);
+      core.debug(`dateMath: \n updated_at: ${listPullRequestsResponse.data[i].updated_at} > 
+      todayDate: ${new Date()} - staleDays: ${staleDays} = 
+      ${listPullRequestsResponse.data[i].updated_at > new Date() - staleDays}`);
+
+      if (listPullRequestsResponse.data[i].updated_at > new Date() - staleDays) {
+        prNumber = listPullRequestsResponse.data[i].number;
         core.debug(`prNumber: ${prNumber}`);
       }
 
@@ -5137,9 +5138,6 @@ async function run() {
       );
 
       core.debug(`Successfully queried GIPHY with query: ${query}, rating: ${rating}, and lang: ${lang}`);
-
-      core.debug(`\n\n\n\n\n\n\n\n\n\n\n`);
-      core.debug(`searchForGifResponse ${JSON.stringify(searchForGifResponse.data)}`);
 
       // Get the ID, title, and GIF URL for the GIF from the response
       const {
