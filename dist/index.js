@@ -5123,7 +5123,7 @@ async function run() {
       core.debug(`updated_at: ${JSON.stringify(listPullRequestsResponse.data[i].updated_at)}`);
       core.debug(`staleDays: ${staleDays}`);
       core.debug(`dateMath: \n updated_at: ${listPullRequestsResponse.data[i].updated_at} > 
-      todayDate: ${new Date()} - staleDays: ${staleDays} = 
+      todayDate: ${new Date()} - staleDays: ${staleDays} = ${new Date() - staleDays}; bool: 
       ${listPullRequestsResponse.data[i].updated_at > new Date() - staleDays}`);
 
       if (listPullRequestsResponse.data[i].updated_at > new Date() - staleDays) {
