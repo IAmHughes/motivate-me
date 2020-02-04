@@ -36,13 +36,14 @@ async function run() {
     let prNumber;
     // eslint-disable-next-line no-plusplus
     for (i = 0; i < listPullRequestsResponse.data.length; i++) {
-      core.debug(`updated_at: ${JSON.stringify(listPullRequestsResponse.data[i].updated_at)}`);
-      core.debug(`staleDays: ${staleDays}`);
-      core.debug(`dateMath: \n updated_at: ${listPullRequestsResponse.data[i].updated_at} > 
-      todayDate: ${new Date()} - staleDays: ${staleDays} = ${new Date() - staleDays}; bool: 
-      ${listPullRequestsResponse.data[i].updated_at > new Date() - staleDays}`);
+      const today = new Date();
 
-      if (listPullRequestsResponse.data[i].updated_at > new Date() - staleDays) {
+      core.debug(`dateMath: \n updated_at: ${listPullRequestsResponse.data[i].updated_at} > 
+      todayDate: ${today} today.getDate: ${today.getDate()} - staleDays: ${staleDays} = ${today.setDate(
+        today.getDate() - staleDays
+      )}; bool: ${listPullRequestsResponse.data[i].updated_at > today.setDate(today.getDate() - staleDays)}`);
+
+      if (listPullRequestsResponse.data[i].updated_at > today.setDate(today.getDate() - staleDays)) {
         prNumber = listPullRequestsResponse.data[i].number;
         core.debug(`prNumber: ${prNumber}`);
       }
