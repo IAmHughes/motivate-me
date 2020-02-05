@@ -38,12 +38,14 @@ async function run() {
     for (i = 0; i < listPullRequestsResponse.data.length; i++) {
       const today = new Date();
 
-      core.debug(`dateMath: \n updated_at: ${listPullRequestsResponse.data[i].updated_at} > 
+      core.debug(`dateMath: \n updated_at: ${
+        listPullRequestsResponse.data[i].updated_at
+      } update_at.getTime(): ${listPullRequestsResponse.data[i].updated_at.getTime()} > 
       todayDate: ${today} today.getDate: ${today.getDate()} - staleDays: ${staleDays} = ${today.setDate(
         today.getDate() - staleDays
-      )}; bool: ${listPullRequestsResponse.data[i].updated_at > today.setDate(today.getDate() - staleDays)}`);
+      )}; bool: ${listPullRequestsResponse.data[i].updated_at.getTime() > today.setDate(today.getDate() - staleDays)}`);
 
-      if (listPullRequestsResponse.data[i].updated_at > today.setDate(today.getDate() - staleDays)) {
+      if (listPullRequestsResponse.data[i].updated_at.getTime() > today.setDate(today.getDate() - staleDays)) {
         prNumber = listPullRequestsResponse.data[i].number;
         core.debug(`prNumber: ${prNumber}`);
       }
