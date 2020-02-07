@@ -17,13 +17,6 @@ For more information on these inputs, see the [GIPHY API Documentation](https://
 - `lang`: The [default language](https://developers.giphy.com/docs/optional-settings#language-support) that the search query is in. Default: `en` for English
 - `stale_days`: Number of days of inactivity before a pull request receives motivation. Default: `14`
 
-### Outputs
-For more information on these outputs, see the [GIPHY API Documentation](https://developers.giphy.com/docs/api/schema/) for an example of what these outputs look like.
-
-- `id`: The GIF's unique ID on GIPHY
-- `title`: The title that appears on GIPHY for the GIF
-- `gif_url`: The publicly-accessible direct URL for the GIF on GIPHY
-
 ### Example workflow - motivate me
 Every day, [query open pull requests](https://developer.github.com/v3/pulls/#list-pull-requests) that are `stale` and add an inspirational [comment](https://developer.github.com/v3/issues/comments/#create-a-comment) powered by GIPHY to add a GIF:
 

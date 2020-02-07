@@ -5110,57 +5110,62 @@ async function run() {
       sort: 'updated'
     });
 
-    core.debug(`prResponse: ${listPullRequestsResponse}`);
+    core.debug(`Successfully received list of active PRs for ${owner}/${repo}`);
 
     // Iterate through pull requests returned above and check date of last activity (`updated_at` field)
     // For each PR that matches stale filter:
     // Use index of PR in array for offset in below query for GIF on GIPHY
     // Create a comment
-    let index;
+    let i;
+    let prNumber;
     // eslint-disable-next-line no-plusplus
-    for (index = 0; index < listPullRequestsResponse.data.length; index++) {
-      if (listPullRequestsResponse.data[index].updated_at > staleDays) {
-        core.debug('listPRResponseData', listPullRequestsResponse.data);
+    for (i = 0; i < listPullRequestsResponse.data.length; i++) {
+      const updatedAt = new Date(listPullRequestsResponse.data[i].updated_at);
+      const today = new Date();
+
+      core.debug(`dateMath: \n updated_at: ${updatedAt} update_at.getTime(): ${updatedAt.getTime()} > 
+      todayDate: ${today} today.getDate: ${today.getDate()} - staleDays: ${staleDays} = ${today.setDate(
+        today.getDate() - staleDays
+      )}; bool: ${updatedAt.getTime() > today.setDate(today.getDate() - staleDays)}`);
+
+      if (updatedAt.getTime() > today.setDate(today.getDate() - staleDays)) {
+        prNumber = listPullRequestsResponse.data[i].number;
+        core.debug(`prNumber: ${prNumber}`);
       }
-    }
 
-    // Query GIPHY for a GIF!
-    // API Documentation: https://developers.giphy.com/docs/api/endpoint/#search
-    const searchForGifResponse = await axios.get(
-      `https://api.giphy.com/v1/gifs/search?api_key=${process.env.GIPHY_TOKEN}&q=${query}&limit=25&offset=0&rating=${rating}&lang=${lang}`
-    );
+      // Query GIPHY for a GIF!
+      // API Documentation: https://developers.giphy.com/docs/api/endpoint/#search
+      const searchForGifResponse = await axios.get(
+        `https://api.giphy.com/v1/gifs/search?api_key=${process.env.GIPHY_TOKEN}&q=${query}&limit=25&offset=0&rating=${rating}&lang=${lang}`
+      );
 
-    core.debug('searcForGifResponse', searchForGifResponse.data);
+      core.debug(`Successfully queried GIPHY with query: ${query}, rating: ${rating}, and lang: ${lang}`);
 
-    // Create a comment
-    // API Documentation: https://developer.github.com/v3/issues/comments/#create-a-comment
-    // Octokit Documentation: https://octokit.github.io/rest.js/#octokit-routes-issues-create-comment
-    const createCommentResponse = await github.repos.createComment({
-      owner,
-      repo,
-      issue_number: 1,
-      body:
-        'Get motivated! ![test](https://media3.giphy.com/media/87xihBthJ1DkA/giphy.gif?cid=790b76112656e5dfae313de575de097305815350cad3216d&rid=giphy.gif)'
-    });
-
-    core.debug(`createCommentResponse: ${createCommentResponse}`);
-    core.debug(`createCommentResponseData: ${createCommentResponse.data}`);
-
-    // Get the ID, title, and GIF URL for the GIF from the response
-    const {
-      data: {
-        id: gifId,
+      // Get the ID, title, and GIF URL for the GIF from the response
+      const {
         title: gifTitle,
         images: {
           original: { url: gifUrl }
         }
-      }
-    } = searchForGifResponse;
+      } = searchForGifResponse.data.data[0];
 
-    // Set the output variables for use by other actions: https://github.com/actions/toolkit/tree/master/packages/core#inputsoutputs
-    core.setOutput('id', gifId);
-    core.setOutput('title', gifTitle);
-    core.setOutput('gif_url', gifUrl);
+      core.debug(`\n\n\n\n\n\n\n\n\n\n\n`);
+      core.debug(`gifTitle: ${JSON.stringify(gifTitle)}`);
+      core.debug(`\n\n\n\n\n\n\n\n\n\n\n`);
+      core.debug(`gifUrl: ${JSON.stringify(gifUrl)}`);
+      core.debug(`\n\n\n\n\n\n\n\n\n\n\n`);
+
+      // Create a comment
+      // API Documentation: https://developer.github.com/v3/issues/comments/#create-a-comment
+      // Octokit Documentation: https://octokit.github.io/rest.js/#octokit-routes-issues-create-comment
+      await github.issues.createComment({
+        owner,
+        repo,
+        issue_number: prNumber,
+        body: `Get motivated!\n\n![${gifTitle}](${gifUrl})`
+      });
+      core.debug(`Successfully created comment on PR#: ${prNumber} and gifTitle: ${gifTitle} - ${gifUrl}`);
+    }
   } catch (error) {
     core.setFailed(error.message);
   }
