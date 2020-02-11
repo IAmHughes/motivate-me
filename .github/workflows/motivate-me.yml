@@ -20,4 +20,4 @@ jobs:
           query: 'motivation'
           rating: 'g'
           lang: 'en'
-          stale_days: 2 #14
+          stale_days: 14
