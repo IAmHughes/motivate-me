@@ -39,14 +39,8 @@ async function run() {
       const updatedAt = new Date(listPullRequestsResponse.data[i].updated_at);
       const today = new Date();
 
-      core.debug(`dateMath: \n updated_at: ${updatedAt} update_at.getTime(): ${updatedAt.getTime()} > 
-      todayDate: ${today} today.getDate: ${today.getDate()} - staleDays: ${staleDays} = ${today.setDate(
-        today.getDate() - staleDays
-      )}; bool: ${updatedAt.getTime() > today.setDate(today.getDate() - staleDays)}`);
-
       if (updatedAt.getTime() > today.setDate(today.getDate() - staleDays)) {
         prNumber = listPullRequestsResponse.data[i].number;
-        core.debug(`prNumber: ${prNumber}`);
       }
 
       // Query GIPHY for a GIF!
@@ -64,12 +58,6 @@ async function run() {
           original: { url: gifUrl }
         }
       } = searchForGifResponse.data.data[0];
-
-      core.debug(`\n\n\n\n\n\n\n\n\n\n\n`);
-      core.debug(`gifTitle: ${JSON.stringify(gifTitle)}`);
-      core.debug(`\n\n\n\n\n\n\n\n\n\n\n`);
-      core.debug(`gifUrl: ${JSON.stringify(gifUrl)}`);
-      core.debug(`\n\n\n\n\n\n\n\n\n\n\n`);
 
       // Create a comment
       // API Documentation: https://developer.github.com/v3/issues/comments/#create-a-comment
