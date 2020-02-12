@@ -5123,6 +5123,10 @@ async function run() {
       const updatedAt = new Date(listPullRequestsResponse.data[i].updated_at);
       const today = new Date();
 
+      core.debug(`updatedAt: ${updatedAt.getTime()} > today: ${today.getDate()} ?
+      todaySetDate: ${today.setDate(today.getDate() - staleDays)}:
+      Answer: ${updatedAt.getTime() > today.setDate(today.getDate() - staleDays)}`);
+
       if (updatedAt.getTime() > today.setDate(today.getDate() - staleDays)) {
         prNumber = listPullRequestsResponse.data[i].number;
       }
