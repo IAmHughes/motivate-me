@@ -49,6 +49,7 @@ async function run() {
 
       // Query GIPHY for a GIF!
       // API Documentation: https://developers.giphy.com/docs/api/endpoint/#search
+      // eslint-disable-next-line no-await-in-loop
       const searchForGifResponse = await axios.get(
         `https://api.giphy.com/v1/gifs/search?api_key=${process.env.GIPHY_TOKEN}&q=${query}&limit=25&offset=0&rating=${rating}&lang=${lang}`
       );
@@ -66,6 +67,7 @@ async function run() {
       // Create a comment
       // API Documentation: https://developer.github.com/v3/issues/comments/#create-a-comment
       // Octokit Documentation: https://octokit.github.io/rest.js/#octokit-routes-issues-create-comment
+      // eslint-disable-next-line no-await-in-loop
       await github.issues.createComment({
         owner,
         repo,
