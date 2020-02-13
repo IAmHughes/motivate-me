@@ -50,7 +50,7 @@ async function run() {
       // API Documentation: https://developers.giphy.com/docs/api/endpoint/#search
       // eslint-disable-next-line no-await-in-loop
       const searchForGifResponse = await axios.get(
-        `https://api.giphy.com/v1/gifs/search?api_key=${process.env.GIPHY_TOKEN}&q=${query}&limit=25&offset=0&rating=${rating}&lang=${lang}`
+        `https://api.giphy.com/v1/gifs/search?api_key=${process.env.GIPHY_TOKEN}&q=${query}&limit=${listPullRequestsResponse.data.length}&offset=0&rating=${rating}&lang=${lang}`
       );
 
       core.debug(`Successfully queried GIPHY with query: ${query}, rating: ${rating}, and lang: ${lang}`);
@@ -61,7 +61,7 @@ async function run() {
         images: {
           original: { url: gifUrl }
         }
-      } = searchForGifResponse.data.data[0];
+      } = searchForGifResponse.data.data[i];
 
       // Create a comment
       // API Documentation: https://developer.github.com/v3/issues/comments/#create-a-comment
