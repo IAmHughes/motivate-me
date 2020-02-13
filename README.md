@@ -1,4 +1,5 @@
 # Motivate Me - GitHub Action
+
 A GitHub action (written in JavaScript) that posts inspirational gifs on stale pull requests leveraging the [GIPHY API](https://developers.giphy.com/docs/api/endpoint/#search). Powered by GIPHY and GitHub Actions!
 
 <a href="https://github.com/iamhughes/motivate-me"><img alt="GitHub Actions status" src="https://github.com/iamhughes/motivate-me/workflows/Tests/badge.svg"></a>
