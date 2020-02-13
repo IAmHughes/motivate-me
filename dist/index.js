@@ -5096,6 +5096,7 @@ async function run() {
 
     // Get the inputs from the workflow file: https://github.com/actions/toolkit/tree/master/packages/core#inputsoutputs
     const query = core.getInput('query', { required: false });
+    const limit = 25;
     const rating = core.getInput('rating', { required: false });
     const lang = core.getInput('lang', { required: false });
     const staleDays = core.getInput('stale_days', { required: false });
@@ -5134,18 +5135,20 @@ async function run() {
       // API Documentation: https://developers.giphy.com/docs/api/endpoint/#search
       // eslint-disable-next-line no-await-in-loop
       const searchForGifResponse = await axios.get(
-        `https://api.giphy.com/v1/gifs/search?api_key=${process.env.GIPHY_TOKEN}&q=${query}&limit=${listPullRequestsResponse.data.length}&offset=0&rating=${rating}&lang=${lang}`
+        `https://api.giphy.com/v1/gifs/search?api_key=${process.env.GIPHY_TOKEN}&q=${query}&limit=${limit}&offset=0&rating=${rating}&lang=${lang}`
       );
 
       core.debug(`Successfully queried GIPHY with query: ${query}, rating: ${rating}, and lang: ${lang}`);
 
       // Get the ID, title, and GIF URL for the GIF from the response
+      const gifIndex = Math.random() * limit;
+
       const {
         title: gifTitle,
         images: {
           original: { url: gifUrl }
         }
-      } = searchForGifResponse.data.data[i];
+      } = searchForGifResponse.data.data[gifIndex];
 
       // Create a comment
       // API Documentation: https://developer.github.com/v3/issues/comments/#create-a-comment
