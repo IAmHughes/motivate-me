@@ -5145,7 +5145,7 @@ async function run() {
         const {
           title: gifTitle,
           images: {
-            original: {url: gifUrl}
+            original: { url: gifUrl }
           }
         } = searchForGifResponse.data.data[gifIndex];
 
