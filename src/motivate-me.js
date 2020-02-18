@@ -58,6 +58,8 @@ async function run() {
         // Get the ID, title, and GIF URL for the GIF from the response
         const gifIndex = Math.random() * limit;
 
+        core.debug(`gifIndex picked is: ${gifIndex}`);
+
         const {
           title: gifTitle,
           images: {
