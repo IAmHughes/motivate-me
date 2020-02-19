@@ -5140,7 +5140,7 @@ async function run() {
         core.debug(`Successfully queried GIPHY with query: ${query}, rating: ${rating}, and lang: ${lang}`);
 
         // Get the ID, title, and GIF URL for the GIF from the response
-        const gifIndex = Math.random() * limit;
+        const gifIndex = Math.ceil(Math.random() * limit);
 
         core.debug(`gifIndex picked is: ${gifIndex}`);
 
