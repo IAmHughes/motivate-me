@@ -3,6 +3,7 @@ A GitHub action (written in JavaScript) that posts inspirational gifs on stale p
 
 ![motivation](https://media1.giphy.com/media/ACcXRXwUqJ6Ok/giphy.gif?cid=790b76114c50f8d3fd545233a84bf5409ed102e90ff8e9e8&rid=giphy.gif)
 
+
 ## Usage
 ### Pre-requisites
 Create a workflow `.yml` file in your `.github/workflows` directory. An [example workflow](#example-workflow---motivate-me) is available below. For more information, reference the GitHub Help Documentation for [Creating a workflow file](https://help.github.com/en/articles/configuring-a-workflow#creating-a-workflow-file).
